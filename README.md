@@ -43,7 +43,10 @@ t = 7.9996, df = 88.692, p-value = 4.44e-12
 
 
 95 percent confidence interval:
+
  2.807313 4.662889
+ 
+ 
 Sample estimates:
 Mean in group Basket mean in group Wishlist 
 14.65028               10.91518
