@@ -23,25 +23,28 @@
      
 ![image](https://user-images.githubusercontent.com/104678755/181855552-7884cf2d-4bea-4cbf-8c83-15c524551390.png)
 
-
-    ## Statistically Comparing Open and Click Through Rates
+## Statistically Comparing Open and Click Through Rates
 
     t = -1.0839, df = 93.002, p-value = 0.2812
-## alternative hypothesis: true difference in means between group Basket and group Wishlist is not equal to 0
-## 95 percent confidence interval:
-##  -3.1977882  0.9396007
-## sample estimates:
-##   mean in group Basket mean in group Wishlist 
-##               39.80737               40.93646
+    
+    
+Alternative hypothesis: true difference in means between group Basket and group Wishlist is not equal to 0
+95 percent confidence interval:
+  -3.1977882  0.9396007
+  
+  
+ Sample estimates:
+ Mean in group Basket mean in group Wishlist 
+ 39.80737               40.93646
 
 
-data:  CTR by Group
-## t = 7.9996, df = 88.692, p-value = 4.44e-12
+Data:  CTR by Group
+t = 7.9996, df = 88.692, p-value = 4.44e-12
 
 
 95 percent confidence interval:
-##  2.807313 4.662889
-## sample estimates:
-##   mean in group Basket mean in group Wishlist 
-##               14.65028               10.91518
+ 2.807313 4.662889
+Sample estimates:
+Mean in group Basket mean in group Wishlist 
+14.65028               10.91518
 
