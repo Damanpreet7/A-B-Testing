@@ -1,0 +1,120 @@
+---
+title: 'OMCA - A/B Testing: Wishlist vs. Basket (= t-test)'
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load the data
+
+```{r}
+## Basic setup ##
+rm(list = ls())
+
+
+
+## Load Data ##
+data <- read.csv("https://raw.githubusercontent.com/Damanpreet7/A-B-Testing/main/OMCA_AB-Test_Data.csv", header=TRUE, sep=";")
+```
+
+head(data)
+
+## Calculate Metrics: Open Rate & Click-through-rate
+```{r}
+data$OR <- data$Open / data$Sent * 100
+data$CTR <- data$Click / data$Sent * 100
+```
+
+## Looking at the data
+```{r}
+plot(density(data$OR), main="Density: OR")
+plot(density(data$CTR), main="Density: CTR")
+```
+
+## Visually Comparing Open and Click Through Rates
+
+We will be using the "ggplot" package throughout this course. This is a very (if not the most) commonly used and helpful tool for visualization. 
+
+```{r, results='asis'}
+
+# Load the package
+library(ggplot2)
+
+# Plot for OR
+plot_or <- ggplot(data, aes(x=Group, y=OR)) +
+  stat_summary(fun=mean, geom="bar") +
+  stat_summary(aes(label=round(..y..,2)), fun=mean, geom="text", size=4, vjust = -0.5) +
+  labs(title="Open Rate by Campaign",
+       x ="Campaign", y = "Open Rate (in %)") +
+  theme_light() +
+  coord_cartesian(ylim = c(0,45))
+plot_or
+
+# Plot for CTR
+plot_ctr  <- ggplot(data, aes(x=Group, y=CTR)) +
+  stat_summary(fun=mean, geom="bar") +
+  stat_summary(aes(label=round(..y..,2)), fun=mean, geom="text", size=4, vjust = -0.5) +
+  labs(title="Click Through Rate by Campaign",
+       x ="Campaign", y = "Click Through Rate (in %)") +
+  theme_light() +
+  coord_cartesian(ylim = c(0,45))
+plot_ctr
+
+# Plotting Results besides each other: Package "ggpubr" might take some time to install
+library(ggpubr)
+ggarrange(plot_or, plot_ctr, 
+          labels = c("A", "B"),
+          ncol = 2, nrow = 1)
+```
+
+## Advanced: comparing density distributions by group
+```{r}
+# Plot Density OR
+plot_density_or <- ggplot(data, aes(x=OR, fill=Group))+
+  geom_density(alpha=0.4) + 
+  xlim(20, 60) +
+  labs(fill = "Campaign") +
+  labs(title="Open Rate by Campaign", 
+       x="OR (in %)", y = "Density") +
+  theme_light() + 
+  theme(legend.position="bottom")
+
+# Plot Density CTR
+plot_density_ctr <- ggplot(data, aes(x=CTR, fill=Group))+
+  geom_density(alpha=0.4) + 
+  xlim(0, 20) +
+  labs(fill = "Campaign") +
+  labs(title="Click Through Rate by Campaign", 
+       x="CTR (in %)", y = "Density") +
+  theme_light() + 
+  theme(legend.position="bottom")
+
+# Combine
+ggarrange(plot_density_or, plot_density_ctr, 
+          labels = c("A", "B"),
+          ncol = 2, nrow = 1)
+```
+
+
+## Statistically Comparing Open and Click Through Rates
+
+```{r}
+#Open Rate
+t.test(OR ~ Group, data)
+
+# Click-Through-Rate
+t.test(CTR ~ Group, data)
+```
+
+
+## Alternative: Use Regression instead of a t-test
+```{r}
+r1 <- lm(OR ~ Group, data)
+summary(r1)
+r2 <- lm(CTR ~ Group, data)
+summary(r2)
+```
